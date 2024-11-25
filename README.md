@@ -2,12 +2,12 @@
 Simple temperatur monitor with time switch
 
 TODO:
-  - [] Check if Wifi can be connected. If NOT --> Start State
+  - [x] Check if Wifi can be connected. If NOT --> Start State
   - [] Start State
-    - [] Activate AP
+    - [x] Activate AP
     - [] LCD: Temp & IP
-    - [] Set SSID & PWD and save
+    - [x] Set SSID & PWD and save
   - [] Monitor State
-    - [] Connect to Wifi
+    - [x] Connect to Wifi
     - [] Set on/off time
     - [] LCD: Temp & IP

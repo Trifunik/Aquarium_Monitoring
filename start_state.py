@@ -4,6 +4,7 @@ except:
   import socket
 
 import start_web_page
+import machine
 
 import re
 
@@ -11,6 +12,9 @@ def start_state():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind(('', 80))
     s.listen(5)
+
+    ssid_check = False
+    pwd_check = False
 
     while True:
         conn, addr = s.accept()
@@ -27,14 +31,20 @@ def start_state():
             f = open('ssid.txt', 'w')
             f.write(result.group(1))
             f.close()
-    
+            ssid_check = True
         
         result = re.search('pwd=(.*) ', wlan_data[0])
         if result is not None:
             f = open('pwd.txt', 'w')
             f.write(result.group(1))
             f.close()
+            pwd_check = True
 
+        if ssid_check == True and pwd_check == True:
+          f = open('state.txt', 'w')
+          f.write('MONITOR_STATE')
+          f.close()
+          machine.reset()
 
         response = start_web_page.web_page()
 
