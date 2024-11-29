@@ -5,7 +5,6 @@ except:
 
 import start_web_page
 import machine
-
 import re
 
 def start_state():

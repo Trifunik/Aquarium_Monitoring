@@ -6,6 +6,7 @@ except:
 import machine
 import network
 import start_state
+import monitoring_state
 import os
 import time
 
@@ -65,4 +66,5 @@ else:
 
   print('Connection successful')
   print(wlan.ifconfig())
+  monitoring_state.monitor_state()
  
