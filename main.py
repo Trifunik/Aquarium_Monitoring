@@ -20,6 +20,8 @@ if 'state.txt' in os.listdir():
   state = f.read()
   print(state)
   f.close()
+else:
+  state = 'START_STATE'
 
 if state == 'START_STATE':
   print('Not connected - Start procedure')
@@ -54,7 +56,7 @@ else:
   wlan.active(True)
   wlan.connect(ssid, password)
 
-  wait_time = time.ticks_ms() + 5000
+  wait_time = time.ticks_ms() + 10000
   
   while wlan.isconnected() == False:
     if wait_time < time.ticks_ms():

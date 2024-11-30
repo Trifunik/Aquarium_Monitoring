@@ -1,7 +1,7 @@
 
-def web_page(light_state):
+def web_page(next_state,HOUR_ON,MIN_ON,HOUR_OFF,MIN_OFF):
   
-  if light_state == "ON":
+  if next_state == "ON":
     button_state = "<p><a href=\"/?light=on\"><button class=\"button button_on\">ON</button></a></p>"
   else:
     button_state = "<p><a href=\"/?light=off\"><button class=\"button button_off\">OFF</button></a></p>"
@@ -10,7 +10,7 @@ def web_page(light_state):
 
   html = """<html>
 <head>
-  <title>ESP Web Server</title>
+  <title>Aquarium Monitor</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="data:,">
   <style>
@@ -26,7 +26,7 @@ def web_page(light_state):
     }
 
     p {
-      font-size: 3rem;
+      font-size: 1rem;
     }
 
     .button {
@@ -41,7 +41,7 @@ def web_page(light_state):
     }
 
     .button_on {
-      background-color: #ffffffb4;
+      background-color: #eeeeee;
       color: #2c3e50;
     }
 
@@ -54,11 +54,11 @@ def web_page(light_state):
 
 <body>
     <form enctype="text/plain" action="/TIME_INPUT">
-        <label class="clabel" for="on-time">ON-Time:</label>
-        <input type="time" id="onTime" name="onTime" />
-        <label class="clabel" for="off-time">  OFF-Time:</label>
-        <input type="time" id="offTime" name="offTime"/>
-        <input class="clabel" type="submit" value="Submit">
+        <p><label class="clabel" for="on-time">ON-Time:</label>
+        <input type="time" id="onTime" name="onTime" value="""+HOUR_ON+":"+MIN_ON+""" /></p>
+        <p><label class="clabel" for="off-time">  OFF-Time:</label>
+        <input type="time" id="offTime" name="offTime" value="""+HOUR_OFF+":"+MIN_OFF+""" /></p>
+        <p><input class="clabel" type="submit" value="Submit"></p>
     </form>
 
     """ + button_state + """

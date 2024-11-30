@@ -10,9 +10,6 @@ import re
 
 light_pin = Pin(12, Pin.OUT)
 
-
-light_state = "OFF"
-
 # set default on an off time
 # 
 def monitor_state():
@@ -25,13 +22,9 @@ def monitor_state():
   HOUR_OFF = "18"
   MIN_OFF = "00"
 
+  next_state = "ON"
+
   while True:
-
-    if light_pin.value() == 1:
-      light_state="ON"
-    else:
-      light_state="OFF"
-
     conn, addr = s.accept()
     print('Got a connection from %s' % str(addr))
     request = conn.recv(1024)
@@ -43,13 +36,31 @@ def monitor_state():
     if light_on == 6:
       print('LED ON')
       light_pin.value(1)
+      next_state="OFF"
     if light_off == 6:
       print('LED OFF')
       light_pin.value(0)
+      next_state="ON"
 
+    # Get ON/OFF Time
     wlan_data = request.split("HTTP/",1)
+    result = re.search('onTime=(.*)&', wlan_data[0])
+    if result is not None:
+      print(result.group(1))
+      tmp = result.group(1)
+      tmp_array = tmp.split("%3A")
+      HOUR_ON = tmp_array[0]
+      MIN_ON = tmp_array[1]
+    
+    result = re.search('offTime=(.*) ', wlan_data[0])
+    if result is not None:
+      print(result.group(1))
+      tmp = result.group(1)
+      tmp_array = tmp.split("%3A")
+      HOUR_OFF = tmp_array[0]
+      MIN_OFF = tmp_array[1]
 
-    response = monitor_web_page.web_page(light_state)
+    response = monitor_web_page.web_page(next_state,HOUR_ON,MIN_ON,HOUR_OFF,MIN_OFF)
 
   
 
