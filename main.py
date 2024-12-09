@@ -10,9 +10,21 @@ import monitoring_state
 import os
 import time
 
+import machine_i2c_lcd_test
+
 state = 'MONITOR_STATE'
 ssid = 'NONE'
 password = 'NONE'
+
+
+
+
+machine_i2c_lcd_test.test_main()
+
+exit() # TESTING LCD
+
+
+
 
 # --- Check State ---
 if 'state.txt' in os.listdir():
