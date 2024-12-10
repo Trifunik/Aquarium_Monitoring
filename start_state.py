@@ -3,11 +3,19 @@ try:
 except:
   import socket
 
+from time import sleep_ms
 import start_web_page
 import machine
 import re
 
-def start_state():
+def start_state(lcd, ip_address):
+    
+    lcd.putstr("Start State")
+    sleep_ms(1000)
+    lcd.clear()
+    
+    lcd.putstr(ip_address)
+
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind(('', 80))
     s.listen(5)

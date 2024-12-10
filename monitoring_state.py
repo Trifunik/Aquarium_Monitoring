@@ -4,6 +4,7 @@ try:
 except:
   import socket
 
+from time import sleep_ms
 import monitor_web_page
 from machine import Pin
 import re
@@ -12,7 +13,14 @@ light_pin = Pin(12, Pin.OUT)
 
 # set default on an off time
 # 
-def monitor_state():
+def monitor_state(lcd, ip_address):
+
+  lcd.putstr("Monitoring State")
+  sleep_ms(1000)
+  lcd.clear()
+
+  lcd.putstr(ip_address)
+
   s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
   s.bind(('', 80))
   s.listen(5)

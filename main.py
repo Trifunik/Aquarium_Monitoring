@@ -8,23 +8,23 @@ import network
 import start_state
 import monitoring_state
 import os
-import time
 
-import machine_i2c_lcd_test
+from time import sleep_ms, ticks_ms
+from machine import I2C, Pin
+from machine_i2c_lcd import I2cLcd
 
 state = 'MONITOR_STATE'
 ssid = 'NONE'
 password = 'NONE'
+DEFAULT_I2C_ADDR = 0x27
 
 
 
-
-machine_i2c_lcd_test.test_main()
-
-exit() # TESTING LCD
-
-
-
+i2c = I2C(1, freq=100000)
+lcd = I2cLcd(i2c, DEFAULT_I2C_ADDR, 2, 16)
+lcd.putstr(" Checking  Wifi ")
+sleep_ms(2000)
+lcd.clear()
 
 # --- Check State ---
 if 'state.txt' in os.listdir():
@@ -45,7 +45,7 @@ if state == 'START_STATE':
 
   print(wlan.ifconfig())
 
-  start_state.start_state()
+  start_state.start_state(lcd, ip_address)
 
 else:
   # --- Get connection data---
@@ -68,10 +68,10 @@ else:
   wlan.active(True)
   wlan.connect(ssid, password)
 
-  wait_time = time.ticks_ms() + 10000
+  wait_time = ticks_ms() + 10000
   
   while wlan.isconnected() == False:
-    if wait_time < time.ticks_ms():
+    if wait_time < ticks_ms():
       f = open('state.txt', 'w')
       f.write('START_STATE')
       f.close()
@@ -79,6 +79,8 @@ else:
       break
 
   print('Connection successful')
-  print(wlan.ifconfig())
-  monitoring_state.monitor_state()
+  tmp_ip_address = wlan.ifconfig()
+  ip_address = str(tmp_ip_address[0])
+
+  monitoring_state.monitor_state(lcd, ip_address)
  
