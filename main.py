@@ -4,7 +4,9 @@ except:
   import socket
 
 import machine
+import onewire
 import network
+import ds18x20
 import start_state
 import monitoring_state
 import os
@@ -18,7 +20,13 @@ ssid = 'NONE'
 password = 'NONE'
 DEFAULT_I2C_ADDR = 0x27
 
-
+ow = onewire.OneWire(Pin(12))
+ds = ds18x20.DS18X20(ow)
+roms = ds.scan()
+ds.convert_temp()
+sleep_ms(750)
+for rom in roms:
+  print(ds.read_temp(rom))
 
 i2c = I2C(1, freq=100000)
 lcd = I2cLcd(i2c, DEFAULT_I2C_ADDR, 2, 16)
@@ -43,7 +51,8 @@ if state == 'START_STATE':
   wlan.config(max_clients=10) # set how many clients can connect to the network
   wlan.active(True)         # activate the interface
 
-  print(wlan.ifconfig())
+  tmp_ip_address = wlan.ifconfig()
+  ip_address = str(tmp_ip_address[0])
 
   start_state.start_state(lcd, ip_address)
 
