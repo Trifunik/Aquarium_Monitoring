@@ -20,6 +20,7 @@ ssid = 'NONE'
 password = 'NONE'
 DEFAULT_I2C_ADDR = 0x27
 
+'''
 ow = onewire.OneWire(Pin(12))
 ds = ds18x20.DS18X20(ow)
 roms = ds.scan()
@@ -27,7 +28,8 @@ ds.convert_temp()
 sleep_ms(750)
 for rom in roms:
   print(ds.read_temp(rom))
-
+'''
+  
 i2c = I2C(1, freq=100000)
 lcd = I2cLcd(i2c, DEFAULT_I2C_ADDR, 2, 16)
 lcd.putstr(" Checking  Wifi ")

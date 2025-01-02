@@ -4,22 +4,30 @@ try:
 except:
   import socket
 
-from time import sleep_ms
+from time import sleep_ms, localtime
 import monitor_web_page
-from machine import Pin
+from machine import Pin, Timer
 import re
 
-light_pin = Pin(12, Pin.OUT)
+import ntptime
+
+light_pin = Pin(16, Pin.OUT)
+
+def periodic_func(lcd, ip_address):
+  temp = localtime()
+  time_string = '{:02d}'.format(temp[3]+1) + ":" + '{:02d}'.format(temp[4])
+
+  lcd.move_to(0,0)
+  lcd.putstr(time_string)
+  lcd.move_to(0,1)
+  lcd.putstr(ip_address)
 
 # set default on an off time
 # 
 def monitor_state(lcd, ip_address):
-
   lcd.putstr("Monitoring State")
   sleep_ms(1000)
   lcd.clear()
-
-  lcd.putstr(ip_address)
 
   s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
   s.bind(('', 80))
@@ -31,6 +39,15 @@ def monitor_state(lcd, ip_address):
   MIN_OFF = "00"
 
   next_state = "ON"
+
+  print(localtime())
+  ntptime.settime()
+  print(localtime())
+
+  timer = Timer(0)
+  timer.init(period=4000, mode=Timer.PERIODIC, callback=lambda b: periodic_func(lcd, ip_address))
+
+  # TODO: Add interrupt for time and temp read out. 
 
   while True:
     conn, addr = s.accept()
@@ -70,7 +87,7 @@ def monitor_state(lcd, ip_address):
 
     response = monitor_web_page.web_page(next_state,HOUR_ON,MIN_ON,HOUR_OFF,MIN_OFF)
 
-  
+    print(localtime())
 
     conn.send('HTTP/1.1 200 OK\n')
     conn.send('Content-Type: text/html\n')
