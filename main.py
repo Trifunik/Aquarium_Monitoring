@@ -20,15 +20,18 @@ ssid = 'NONE'
 password = 'NONE'
 DEFAULT_I2C_ADDR = 0x27
 
-'''
-ow = onewire.OneWire(Pin(12))
-ds = ds18x20.DS18X20(ow)
-roms = ds.scan()
-ds.convert_temp()
-sleep_ms(750)
-for rom in roms:
-  print(ds.read_temp(rom))
-'''
+
+try:
+  ow = onewire.OneWire(Pin(12))
+  ds = ds18x20.DS18X20(ow)
+  roms = ds.scan()
+  ds.convert_temp()
+  sleep_ms(750)
+  for rom in roms:
+    print(ds.read_temp(rom))
+except:
+  ds = "ERROR"
+
   
 i2c = I2C(1, freq=100000)
 lcd = I2cLcd(i2c, DEFAULT_I2C_ADDR, 2, 16)
@@ -56,7 +59,7 @@ if state == 'START_STATE':
   tmp_ip_address = wlan.ifconfig()
   ip_address = str(tmp_ip_address[0])
 
-  start_state.start_state(lcd, ip_address)
+  start_state.start_state(lcd, ip_address, ds)
 
 else:
   # --- Get connection data---
@@ -93,5 +96,5 @@ else:
   tmp_ip_address = wlan.ifconfig()
   ip_address = str(tmp_ip_address[0])
 
-  monitoring_state.monitor_state(lcd, ip_address)
+  monitoring_state.monitor_state(lcd, ip_address, ds)
  

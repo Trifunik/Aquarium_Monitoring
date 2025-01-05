@@ -1,7 +1,7 @@
 
-def web_page(next_state,HOUR_ON,MIN_ON,HOUR_OFF,MIN_OFF):
+def web_page(global_dict):
   
-  if next_state == "ON":
+  if global_dict["next_state"] == "ON":
     button_state = "<p><a href=\"/?light=on\"><button class=\"button button_on\">ON</button></a></p>"
   else:
     button_state = "<p><a href=\"/?light=off\"><button class=\"button button_off\">OFF</button></a></p>"
@@ -53,11 +53,12 @@ def web_page(next_state,HOUR_ON,MIN_ON,HOUR_OFF,MIN_OFF):
 </head>
 
 <body>
+    <p>Temp: <strong>""" + global_dict["temp"] + """</strong></p>
     <form enctype="text/plain" action="/TIME_INPUT">
         <p><label class="clabel" for="on-time">ON-Time:</label>
-        <input type="time" id="onTime" name="onTime" value="""+HOUR_ON+":"+MIN_ON+""" /></p>
+        <input type="time" id="onTime" name="onTime" value="""+global_dict["HOUR_ON"]+":"+global_dict["MIN_ON"]+""" /></p>
         <p><label class="clabel" for="off-time">  OFF-Time:</label>
-        <input type="time" id="offTime" name="offTime" value="""+HOUR_OFF+":"+MIN_OFF+""" /></p>
+        <input type="time" id="offTime" name="offTime" value="""+global_dict["HOUR_OFF"]+":"+global_dict["MIN_OFF"]+""" /></p>
         <p><input class="clabel" type="submit" value="Submit"></p>
     </form>
 

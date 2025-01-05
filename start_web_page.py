@@ -1,4 +1,9 @@
-def web_page():
+def web_page(global_dict):
+  
+  if global_dict["next_state"] == "ON":
+    button_state = "<p><a href=\"/?light=on\"><button class=\"button button_on\">ON</button></a></p>"
+  else:
+    button_state = "<p><a href=\"/?light=off\"><button class=\"button button_off\">OFF</button></a></p>"
    
   html = """<html>
         <head>
@@ -45,6 +50,7 @@ def web_page():
         </head>
 
         <body>
+            <p>Temp: <strong>""" + global_dict["temp"] + """</strong></p>
             <form enctype="text/plain" action="/WIFI_INPUT">
                 <label class="clabel" for="ssid">SSID:</label>
                 <input type="text" id="ssidID" name="ssid" value="" placeholder="ssid"><br><br>
@@ -53,6 +59,9 @@ def web_page():
                 <input class="clabel" type="submit" value="Submit">
             </form>
             <p>Restart after submit!</p>
+
+                """ + button_state + """
+
         </body>
 
         </html>"""
