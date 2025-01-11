@@ -22,7 +22,7 @@ DEFAULT_I2C_ADDR = 0x27
 
 
 try:
-  ow = onewire.OneWire(Pin(12))
+  ow = onewire.OneWire(Pin(14))
   ds = ds18x20.DS18X20(ow)
   roms = ds.scan()
   ds.convert_temp()
@@ -30,6 +30,7 @@ try:
   for rom in roms:
     print(ds.read_temp(rom))
 except:
+  print("- NO TEMP -")
   ds = "ERROR"
 
   
