@@ -12,7 +12,8 @@ import re
 import ntptime
 import ds18x20
 
-light_pin = Pin(16, Pin.OUT)
+light_pin1 = Pin(16, Pin.OUT)
+light_pin2 = Pin(17, Pin.OUT)
 
 global_dict = {
 	"IP_ADDRESS": "10.10.10.10",
@@ -51,11 +52,13 @@ def set_light(light_on, light_off, state):
 			state = "MANUAL"
 
 	if light_on == 6 or state == "ON":
-		light_pin.value(1)
+		light_pin1.value(1)
+		light_pin2.value(1)
 		global_dict["next_state"]="OFF"
 	
 	if light_off == 6 or state == "OFF":
-		light_pin.value(0)
+		light_pin1.value(0)
+		light_pin2.value(0)
 		global_dict["next_state"]="ON"
 
 	if light_on == 6 or light_off == 6:

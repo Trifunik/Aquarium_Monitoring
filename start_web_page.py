@@ -1,11 +1,10 @@
 def web_page(global_dict):
-  
-  if global_dict["next_state"] == "ON":
-    button_state = "<p><a href=\"/?light=on\"><button class=\"button button_on\">ON</button></a></p>"
-  else:
-    button_state = "<p><a href=\"/?light=off\"><button class=\"button button_off\">OFF</button></a></p>"
+    if global_dict["next_state"] == "ON":
+        button_state = "<p><a href=\"/?light=on\"><button class=\"button button_on\">ON</button></a></p>"
+    else:
+        button_state = "<p><a href=\"/?light=off\"><button class=\"button button_off\">OFF</button></a></p>"
    
-  html = """<html>
+    html = """<html>
         <head>
         <title>Aquarium Monitor</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -66,4 +65,4 @@ def web_page(global_dict):
 
         </html>"""
 
-  return html
+    return html
